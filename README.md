@@ -8,7 +8,7 @@ I then decided to tackle the Github API and I made a little Github browser with 
 
 ## Installation
 
-The application itself is in the `Scripts\user-admin' directory - and be sure to grab `Scripts\user-admin.js` as well. All the tests are in the `Scripts\user-admin-tests' directory (separated to avoid build issues). 
+The application itself is in the `Scripts\user-admin` directory - and be sure to grab `Scripts\user-admin.js` as well. All the tests are in the `Scripts\user-admin-tests' directory (separated to avoid build issues). 
 
 Finally, be sure to have a look at `Models\UserIdentity` - I've added some things to the UserIdentity model that I think are worth while to have. I've also added some test data into the App_Data directory so you can play around.
 
