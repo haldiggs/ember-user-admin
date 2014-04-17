@@ -2,8 +2,15 @@
     ViewBag.Title = "Account Administration";
 }
 
-<div class="container" id="user-admin-app"></div>
+<div id="user-admin-app"></div>
 
 
-<script src="~/Content/javascripts/vendor/ember/handlebars-1.1.2.js"></script>
-<script src="~/Content/javascripts/vendor/ember/ember-1.4.0.js"></script>
+<script src="~/Scripts/vendor/ember/handlebars-1.1.2.js"></script>
+<script src="~/Scripts/vendor/ember/ember-1.4.0.js"></script>
+<script src="~/Scripts/vendor/ember/ember-data.js"></script>
+<script src="~/Scripts/vendor/md5.js"></script>
+<script src="~/Scripts/vendor/moment/moment.js"></script>
+
+
+@Scripts.Render("~/apps/useradmin")
+@Scripts.Render("~/bundles/templates")

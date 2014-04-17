@@ -10,7 +10,7 @@
     <link rel='stylesheet' href='/Content/stylesheets/bootstrap.min.css' />
     <link rel='stylesheet' href='/Content/stylesheets/bootstrap-theme.min.css' />
     <link rel='stylesheet' href='/Content/stylesheets/overrides.css' />
-    <script src="~/Content/javascripts/vendor/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/vendor/jquery-1.10.2.js"></script>
 
   </head>
   <body style="padding-top:72px">
@@ -30,7 +30,7 @@
                 <li>@Html.ActionLink("Home", "Index", "Home")</li>
                 <li>@Html.ActionLink("About", "About", "Home")</li>
                 <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                @if (User.Identity.Name == "robconery")
+                @if (User.IsInRole("Administrator"))
                 {
                     <li>@Html.ActionLink("Admin", "admin", "account")</li>
                 }

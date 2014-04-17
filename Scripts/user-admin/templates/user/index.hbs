@@ -1,0 +1,42 @@
+﻿{{view "UserAdmin.BreadcrumbView"}}
+<hr />
+<h2>Choose what you want to do:</h2>
+<ul>
+    <li>{{#link-to 'user.editinfo'}}Edit Basic Info{{/link-to}}</li>
+    <li>{{#link-to 'user.changeroles'}}Change User Roles{{/link-to}}</li>
+    <li>{{#link-to 'user.addnote'}}Add a Note{{/link-to}}</li>
+</ul>
+<hr />
+<div class="row">
+    <div class="col-md-5">
+        <h4>Notes</h4>
+        <table class="table table-striped">
+            {{#each note in controllers.user.notes}}
+            <tr>
+                <td>{{fromDate note.created_at}}</td>
+                <td>{{note.note}}</td>
+            </tr>
+            {{else}}
+            <tr>
+                <td><i>Nothing yet...</i></td>
+            </tr>                
+            {{/each}}
+        </table>
+    </div>
+    <div class="col-md-5">
+        <h4>Logs</h4>
+        <table class="table table-striped">
+            {{#each log in controllers.user.logs}}
+            <tr>
+                <td>{{fromDate log.created_at}}</td>
+                <td>{{log.entry}}</td>
+            </tr>
+            {{else}}
+            <tr>
+                <td><i>Nothing yet...</i></td>
+            </tr>
+            {{/each}}
+        </table>        
+
+    </div>
+</div>

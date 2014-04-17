@@ -1,0 +1,12 @@
+﻿{{view "UserAdmin.BreadcrumbView" pageTitle="Add Note"}}
+<h3>Add a Note to {{controllers.user.first}}'s Account</h3>
+<form {{action "saveNote" on="submit"}}>
+    <p>
+        <textarea id="new-note" rows="5" class="form-control" placeholder="Add your note..."></textarea>
+    </p>
+    <p>
+        <input type="submit" class="btn btn-success" value="Add Note" />
+    </p>
+</form>
+
+{{render "notes" controllers.user.notes}}

@@ -1,73 +1,65 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Web.Models;
-using System.Linq;
-using Newtonsoft.Json;
+using System.Data.Entity;
 
 namespace Web.Controllers
 {
-
-    [Authorize(Roles="admin")]  
+    
+    [Authorize(Roles="Administrator")]
     public class UsersController : ApiController
     {
-        
+
         // GET api/users
-        public dynamic Get()
+        public dynamic Get(int limit=50, string q="")
         {
-            var db = new ApplicationDbContext();
-            var users = db.Users;
-            var result = new List<dynamic>();
-            var roles = new List<dynamic>();
-            var indexer = 1;
-            foreach (var user in users)
-            {
-                result.Add(new
-                {
-                    id = indexer,
-                    userName = user.UserName,
-                    email = user.Email,
-                    first = user.First,
-                    last = user.Last,
-                    bio = user.Bio,
-                    twitter = user.Twitter,
-                    roles = user.Roles.Select(x => int.Parse(x.RoleId)).ToArray()
-                });
-                indexer++;
-
-            }
-            foreach (var role in db.Roles)
-            {
-                roles.Add(new { id = int.Parse(role.Id), name = role.Name });
-            }
-            var output = new {users = result, roles = roles};
-            return output;
-
+            return ApplicationUser.GetSummarySet(limit:limit,searchBy:q);
         }
 
         // GET api/users/5
-        public string Get(int id)
+        public dynamic Get(string id)
         {
-            return "value";
+            return ApplicationUser.GetSummarySet(id : id);
         }
 
         // POST api/users
         public void Post([FromBody]string value)
         {
         }
-
+        
         // PUT api/users/5
-        public void Put(int id, [FromBody]string value)
+        public dynamic Put(string id, dynamic model)
         {
+            using (var db = new ApplicationDbContext())
+            {
+                var user = db.Users.FirstOrDefault(x => x.Id == id);
+                //load it up!
+                if (user != null)
+                {
+                    user.UserName = model.user.userName;
+                    user.First = model.user.first;
+                    user.Last = model.user.last;
+                    user.Email = model.user.email;
+                    user.Bio = model.user.bio;
+                    user.Twitter = model.user.twitter;
+
+                    db.SaveChanges();
+                }
+            }
+            return model;
+
         }
 
         // DELETE api/users/5
-        public void Delete(int id)
+        public void Delete(string id)
         {
+
+
         }
     }
 }

@@ -1,0 +1,12 @@
+﻿<table class="table table-striped">
+    {{#each}}
+    <tr>
+        <td>{{fromDate created_at}}</td>
+        <td>{{note}}</td>
+    </tr>
+    {{else}}
+    <tr>
+        <td><i>No notes yet...</i></td>
+    </tr>
+    {{/each}}
+</table>

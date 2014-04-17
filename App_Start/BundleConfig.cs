@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using HandlebarsHelper;
+using System.Web;
 using System.Web.Optimization;
 
 namespace Web
@@ -8,6 +9,17 @@ namespace Web
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+
+            bundles.Add(new Bundle("~/bundles/templates", new HandlebarsTransformer())
+                    .IncludeDirectory("~/Scripts/user-admin/templates", "*.hbs", true)
+            );
+
+            BundleTable.EnableOptimizations = true;
+
+            bundles.Add(new ScriptBundle("~/apps/useradmin")
+                .Include("~/Scripts/user-admin.js")
+                .IncludeDirectory("~/Scripts/user-admin/", "*.js", true));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js"));
 

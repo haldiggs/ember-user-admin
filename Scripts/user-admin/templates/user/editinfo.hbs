@@ -1,0 +1,45 @@
+﻿{{view "UserAdmin.BreadcrumbView" pageTitle="Edit User"}}
+
+<h3>Basic Information</h3>
+<form class="form-horizontal" {{action "saveUser" on="submit"}}>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="UserName">User name</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.userName class="form-control"}}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="Email">Email</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.email class="form-control"}}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="Email">First</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.first class="form-control"}}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="Email">Last</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.last class="form-control"}}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="Email">Twitter</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.twitter class="form-control"}}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-md-2 control-label" for="Email">Bio</label>
+		<div class="col-md-10">
+			{{input value=controllers.user.bio class="form-control"}}
+		</div>
+	</div>
+    <hr />
+    <div class="form-group">
+        <input type="submit" value="save" class="btn btn-success" />
+    </div>
+</form>

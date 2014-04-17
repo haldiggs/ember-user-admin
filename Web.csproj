@@ -41,9 +41,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EcmaScript.NET">
+      <HintPath>packages\EcmaScript.Net.1.0.1.0\lib\net20\EcmaScript.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="HandlebarsHelper">
+      <HintPath>packages\HandlebarsHelper.1.1.0\lib\net45\HandlebarsHelper.dll</HintPath>
+    </Reference>
     <Reference Include="Inflector, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Inflector.1.0.0.0\lib\net45\Inflector.dll</HintPath>
+    </Reference>
+    <Reference Include="Jurassic">
+      <HintPath>packages\Jurassic.2.2.0\lib\Jurassic.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -71,6 +80,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.2\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -96,9 +109,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.0.0\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.1\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.0.0\lib\net45\System.Web.Razor.dll</HintPath>
@@ -122,6 +132,9 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Yahoo.Yui.Compressor">
+      <HintPath>packages\YUICompressor.NET.2.3.0.0\lib\NET20\Yahoo.Yui.Compressor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +191,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\MembershipsController.cs" />
+    <Compile Include="Controllers\Api\NotesController.cs" />
+    <Compile Include="Controllers\Api\RolesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Api\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -189,38 +205,51 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\db_scripts.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Content\javascripts\vendor\bootstrap\bootstrap.min.js" />
-    <Content Include="Content\javascripts\vendor\ember\ember-1.4.0.js" />
-    <Content Include="Content\javascripts\vendor\ember\handlebars-1.1.2.js" />
-    <Content Include="Content\javascripts\vendor\jquery-1.10.2.js" />
-    <Content Include="Content\javascripts\vendor\moment\moment.js" />
+    <Content Include="gruntfile.js" />
+    <Content Include="Scripts\user-admin.js" />
+    <Content Include="Scripts\user-admin\components\gravatar-image.js" />
+    <Content Include="Scripts\user-admin\controllers\add_note.js" />
+    <Content Include="Scripts\user-admin\controllers\role.js" />
+    <Content Include="Scripts\user-admin\controllers\roles.js" />
+    <Content Include="Scripts\user-admin\controllers\user_change_roles.js" />
+    <Content Include="Scripts\user-admin\controllers\user.js" />
+    <Content Include="Scripts\user-admin\controllers\users.js" />
+    <Content Include="Scripts\user-admin\controllers\user_edit_info.js" />
+    <Content Include="Scripts\user-admin\controllers\user_index.js" />
+    <Content Include="Scripts\user-admin\controllers\user_notes.js" />
+    <Content Include="Scripts\user-admin\helpers\from_date.js" />
+    <Content Include="Scripts\user-admin\models\log.js" />
+    <Content Include="Scripts\user-admin\models\membership.js" />
+    <Content Include="Scripts\user-admin\models\note.js" />
+    <Content Include="Scripts\user-admin\models\role.js" />
+    <Content Include="Scripts\user-admin\models\user.js" />
+    <Content Include="Scripts\user-admin\routes\application_routes.js" />
+    <Content Include="Scripts\user-admin\routes\users.js" />
+    <Content Include="Scripts\user-admin-tests\basics.js" />
+    <Content Include="Scripts\user-admin-tests\tests.html" />
+    <Content Include="Scripts\user-admin\views\breadcrumb.js" />
+    <Content Include="Scripts\vendor\bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\vendor\ember\ember-1.4.0.js" />
+    <Content Include="Scripts\vendor\ember\ember-data.js" />
+    <Content Include="Scripts\vendor\ember\handlebars-1.1.2.js" />
+    <Content Include="Scripts\vendor\jquery-1.10.2.js" />
+    <Content Include="Scripts\vendor\md5.js" />
+    <Content Include="Scripts\vendor\moment\moment.js" />
     <Content Include="Content\stylesheets\bootstrap-theme.min.css" />
     <Content Include="Content\stylesheets\bootstrap.min.css" />
     <Content Include="Content\stylesheets\overrides.css" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
+    <Content Include="Scripts\vendor\qunit\qunit-1.14.0.css" />
+    <Content Include="Scripts\vendor\qunit\qunit.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -237,7 +266,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
@@ -251,15 +279,46 @@
     <Content Include="Views\Account\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
-    <Folder Include="Scripts\AccountAdmin\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\application.hbs" />
+    <Content Include="Scripts\user-admin\templates\user\notes.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\index.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\users.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\user.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\user\index.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\user\editinfo.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\breadcrumbs.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\roles.hbs">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\user\changeroles.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\user\addnote.hbs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\user-admin\templates\components\gravatar-image.hbs" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

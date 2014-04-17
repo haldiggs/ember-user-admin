@@ -1,0 +1,29 @@
+﻿<div class="row">
+    <div class="col-md-10">
+        <h3>Find a User By Email or Last Name</h3>
+        <form class="form-inline" {{action "searchForUser" on="submit"}}>
+            {{input value=searchTerm class="form-control"  placeholder="Search by email or last name"}}
+            <button class="btn btn-success">go</button>
+        </form>
+    </div>
+    <hr />
+</div>
+<h1>{{title}}</h1>
+<table class="table table-striped" id="users-list">
+    <tr>
+        <th>User</th>
+        <th>Name</th>
+        <th>Member Since</th>
+    </tr>
+    {{#each}}
+    <tr>
+        <td>{{#link-to 'user' this}}{{gravatar-image email=email size=80}}{{/link-to}}</td>
+        <td>{{#link-to 'user' this}}{{first}} {{last}} {{/link-to}}</td>
+        <td>{{fromDate created_at}}</td>
+    </tr>
+    {{else}}
+    <tr>
+        <td colspan="3"><i>No users...</i></td>
+    </tr>
+    {{/each}}
+</table>

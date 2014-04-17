@@ -27,7 +27,7 @@ namespace Web.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Admin()
         {
             return View();
@@ -54,7 +54,9 @@ namespace Web.Controllers
                 var user = await UserManager.FindAsync(model.UserName, model.Password);
                 if (user != null)
                 {
+
                     await SignInAsync(user, model.RememberMe);
+                    LogEvent("Logged in with username/password", model.UserName);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -84,11 +86,12 @@ namespace Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser() { UserName = model.UserName };
+                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
+                    LogEvent("Registered", model.UserName);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -111,6 +114,8 @@ namespace Web.Controllers
             IdentityResult result = await UserManager.RemoveLoginAsync(User.Identity.GetUserId(), new UserLoginInfo(loginProvider, providerKey));
             if (result.Succeeded)
             {
+                var user = UserManager.FindByName(User.Identity.Name);
+                LogEvent("Removed " + loginProvider);
                 message = ManageMessageId.RemoveLoginSuccess;
             }
             else
@@ -149,6 +154,7 @@ namespace Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    LogEvent("Changed password");
                     IdentityResult result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
                     if (result.Succeeded)
                     {
@@ -213,6 +219,7 @@ namespace Web.Controllers
             var user = await UserManager.FindAsync(loginInfo.Login);
             if (user != null)
             {
+                LogEvent("Logged in with " + loginInfo.Login.LoginProvider + ": " + loginInfo.Login.ProviderKey, user.UserName);
                 await SignInAsync(user, isPersistent: false);
                 return RedirectToLocal(returnUrl);
             }
@@ -247,6 +254,7 @@ namespace Web.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             if (result.Succeeded)
             {
+                LogEvent("Added login " + loginInfo.Login);
                 return RedirectToAction("Manage");
             }
             return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
@@ -280,6 +288,7 @@ namespace Web.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
+                        LogEvent("Logged in with external account: " + info.Login, user.UserName);
                         return RedirectToLocal(returnUrl);
                     }
                 }
@@ -296,6 +305,8 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            var user = UserManager.FindById(User.Identity.Name);
+            LogEvent("Logged out");
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -337,9 +348,26 @@ namespace Web.Controllers
                 return HttpContext.GetOwinContext().Authentication;
             }
         }
-
+        private void LogEvent(string entry, string userName = null){
+            //HACK: This is such a ridiculous hack. There is evidently no UnitOfWork open here on 
+            //the user - attaching a log doesn't work. Lovely.
+            using (var db = new ApplicationDbContext())
+            {
+                var login = userName ?? User.Identity.Name;
+                var user = db.Users.FirstOrDefault(x => x.UserName == login);
+                if (user != null)
+                {
+                    var log = new AspNetUserLog();
+                    log.Entry = entry;
+                    user.Logs = user.Logs ?? new List<AspNetUserLog>();
+                    user.Logs.Add(log);
+                    var result = db.SaveChanges();
+                }
+            }
+        }
         private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
+
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
             var identity = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);

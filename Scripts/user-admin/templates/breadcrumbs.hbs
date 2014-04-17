@@ -1,0 +1,14 @@
+﻿{{#if view.pageTitle}}
+<ol class="breadcrumb">
+    <li>{{#link-to 'index'}}Admin{{/link-to}}</li>
+    <li>{{#link-to 'users'}}Users{{/link-to}}</li>
+    <li>{{#link-to 'user.index'}}{{controllers.user.fullName}}{{/link-to}}</li>
+    <li class="active">{{view.pageTitle}}</li>
+</ol>
+{{else}}
+<ol class="breadcrumb">
+    <li>{{#link-to 'index'}}Admin{{/link-to}}</li>
+    <li>{{#link-to 'users'}}Users{{/link-to}}</li>
+    <li class="active">{{controllers.user.fullName}}</li>
+</ol>
+{{/if}}

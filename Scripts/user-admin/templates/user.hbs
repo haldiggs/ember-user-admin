@@ -1,0 +1,22 @@
+﻿<div class="row">
+    <div class="col-md-4">
+        <div class="well">
+            <p class="text-centered">
+                {{gravatar-image email=email size=200}}
+            </p>
+            <h4>{{fullName}}</h4>
+            <table class="table table-striped">
+                <tr><td>Username:</td><td>{{userName}}</td></tr>
+                <tr><td>Twitter:</td><td>{{twitter}}</td></tr>
+                <tr><td>Bio: </td><td>{{bio}}</td></tr>
+                <tr><td>Email: </td><td>{{email}}</td></tr>
+            </table>
+            <p>
+                {{#link-to "users"}}Back{{/link-to}}
+            </p>
+        </div>
+    </div>
+    <div class="col-md-8">
+        {{outlet}}
+    </div>
+</div>
