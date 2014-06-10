@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace Web.Models
 {
@@ -31,27 +32,29 @@ namespace Web.Models
         public ICollection<AspNetUserNote> Notes { get; set; }
 
         public static dynamic GetSummarySet(string id=null, int limit = 50, string searchBy = ""){
-            var db = new ApplicationDbContext();
-            var dbUsers = db.Users.Include(x => x.Notes).Include(x => x.Logs);
-            if (!String.IsNullOrWhiteSpace(searchBy))
-            {
-                //not a good idea - use Full Text search
-                dbUsers = dbUsers.Where(x => x.Email.StartsWith(searchBy) || 
-                    x.Last.StartsWith(searchBy));
-            }
-            else if (id != null)
-            {
-                dbUsers = dbUsers.Where(x => x.Id == id);
-            }
-            dbUsers = dbUsers.Take(limit).OrderByDescending(x => x.CreatedAt);
+            var context = new ApplicationDbContext();
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+
             var users = new List<dynamic>();
             var roles = new List<dynamic>();
             var logs = new List<dynamic>();
             var notes = new List<dynamic>();
             var assignments = new List<dynamic>();
-            foreach (var user in dbUsers)
+
+            foreach (var role in roleManager.Roles)
             {
-                
+                roles.Add(new
+                {
+                    id = int.Parse(role.Id),
+                    name = role.Name,
+                    membership = new List<string>()
+                });
+
+            }
+
+            foreach (var user in userManager.Users.Include("Notes").Include("Logs").ToList())
+            {
                 users.Add(new
                 {
                     id = user.Id,
@@ -66,36 +69,20 @@ namespace Web.Models
                     membership = new List<string>(),
                     created_at = user.CreatedAt
                 });
-            }
-            foreach (var role in db.Roles)
-            {
-                roles.Add(new
-                {
-                    id = int.Parse(role.Id),
-                    name = role.Name,
-                    membership = new List<string>()
-                });
 
-            }
-            //notes - just load what we have for users
-            //there's probably a better way to do this, my LINQ sucks
-            foreach (var user in dbUsers)
-            {
-                foreach (var note in user.Notes.OrderByDescending(x=>x.CreatedAt))
+                //notes
+                foreach (var note in user.Notes.OrderByDescending(x => x.CreatedAt))
                 {
                     notes.Add(new
                     {
                         id = note.ID,
                         note = note.Note,
-                        user= user.Id,
+                        user = user.Id,
                         created_at = note.CreatedAt
                     });
                 }
-            }
 
-            //logs
-            foreach (var user in dbUsers)
-            {
+                //logs
                 foreach (var log in user.Logs)
                 {
                     logs.Add(new
@@ -106,11 +93,8 @@ namespace Web.Models
                         created_at = log.CreatedAt
                     });
                 }
-            }
 
-            //assignments
-            foreach (var user in dbUsers)
-            {
+                //assignments
                 foreach (var r in user.Roles)
                 {
                     var membershipId = user.Id + "|" + r.RoleId;
