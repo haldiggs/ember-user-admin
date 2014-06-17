@@ -47,10 +47,12 @@ namespace Web.Controllers
                     user.Email = model.user.email;
                     user.Bio = model.user.bio;
                     user.Twitter = model.user.twitter;
-
+                    
                     db.SaveChanges();
                 }
             }
+          //have to set the id here
+            model.user.id = id;
             return model;
 
         }

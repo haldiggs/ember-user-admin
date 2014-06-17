@@ -42,11 +42,13 @@ namespace Web.Models
             var notes = new List<dynamic>();
             var assignments = new List<dynamic>();
 
-            foreach (var role in roleManager.Roles)
+
+          var thingy = roleManager.Roles.ToList();
+          foreach (var role in thingy)
             {
                 roles.Add(new
                 {
-                    id = int.Parse(role.Id),
+                    id = role.Id,
                     name = role.Name,
                     membership = new List<string>()
                 });
@@ -102,10 +104,10 @@ namespace Web.Models
                     {
                         id = membershipId,
                         user = user.Id,
-                        role = int.Parse(r.RoleId)
+                        role = r.RoleId
                     });
                     //update the roles output 
-                    var roler = roles.First(x => x.id == int.Parse(r.RoleId));
+                    var roler = roles.First(x => x.id == r.RoleId);
                     roler.membership.Add(membershipId);
                     var userx = users.FirstOrDefault(x => x.id == user.Id);
                     userx.membership.Add(membershipId);
